@@ -13,205 +13,204 @@
       --gold-dk: #C8890A; --green: #3DAA47;
       --white: #FFFFFF; --black: #111111; --cream: #FEFCF8;
     }
-    html, body { width:100%; height:100%; overflow:hidden; background:var(--white); font-family:'Nunito',sans-serif; }
-
-    #canvas { position:fixed; inset:0; pointer-events:none; z-index:1; }
+    html, body { width:100%; height:100%; overflow:hidden; background:#fff; font-family:'Nunito',sans-serif; }
 
     #flash { position:fixed; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:999; transition:opacity .15s ease; }
     #flash.on { opacity:1; }
 
+    /* ═══ FLAG EMOJI BACKGROUND ═══ */
+    #flagBg {
+      position: fixed; inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+    }
+    .flag-row {
+      white-space: nowrap;
+      font-size: 16px;
+      line-height: 2.1;
+      opacity: 0.45;
+      flex-shrink: 0;
+      will-change: transform;
+      user-select: none;
+    }
+    @keyframes scrollL {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @keyframes scrollR {
+      from { transform: translateX(-50%); }
+      to   { transform: translateX(0); }
+    }
+
     /* ═══════════════ SPLASH / CARD ═══════════════ */
     #splash {
-      position:fixed; inset:0; z-index:30;
-      display:flex; align-items:center; justify-content:center;
-      background:var(--white);
-      transition:opacity .5s ease;
+      position: fixed; inset: 0; z-index: 30;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent;
+      transition: opacity .5s ease;
     }
-    #splash::before {
-      content:''; position:absolute; inset:0;
-      background:linear-gradient(to right, var(--red) 0% 30%, transparent 30% 70%, var(--blue) 70% 100%);
-      opacity:.05;
-    }
-    #splash.out { opacity:0; pointer-events:none; }
+    #splash.out { opacity: 0; pointer-events: none; }
 
     /* Card wrapper – bounce in */
     #cardWrap {
-      position:relative;
-      width:clamp(270px,80vw,360px);
-      height:clamp(410px,85vh,560px);
-      animation:cardIn .85s cubic-bezier(.22,1,.36,1) .25s both;
+      position: relative;
+      width: clamp(270px, 80vw, 360px);
+      height: clamp(410px, 85vh, 560px);
+      animation: cardIn .85s cubic-bezier(.22,1,.36,1) .25s both;
     }
-    @keyframes cardIn { from{opacity:0;transform:translateY(70px) scale(.88)} to{opacity:1;transform:none} }
+    @keyframes cardIn { from { opacity:0; transform:translateY(70px) scale(.88); } to { opacity:1; transform:none; } }
 
-    /* Idle float */
-    #cardFloat { width:100%; height:100%; animation:cardFloat 4s ease-in-out 1.4s infinite; }
+    #cardFloat { width:100%; height:100%; animation: cardFloat 4s ease-in-out 1.4s infinite; }
     @keyframes cardFloat {
-      0%,100%{transform:translateY(0) rotate(0deg)}
-      50%{transform:translateY(-10px) rotate(.4deg)}
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      50%      { transform: translateY(-10px) rotate(.4deg); }
     }
 
-    /* Perspective container */
     #cardPersp { width:100%; height:100%; perspective:1400px; position:relative; }
 
-    /* Gold seam glow */
     #cardGlow {
-      position:absolute; left:-20%; right:-20%;
-      top:calc(50% - 30px); height:60px; z-index:5;
-      background:radial-gradient(ellipse,rgba(255,210,0,1) 0%,rgba(255,180,0,.6) 45%,transparent 75%);
-      opacity:0; pointer-events:none;
-      transition:opacity .2s ease;
+      position: absolute; left:-20%; right:-20%;
+      top: calc(50% - 30px); height: 60px; z-index: 5;
+      background: radial-gradient(ellipse, rgba(255,210,0,1) 0%, rgba(255,180,0,.6) 45%, transparent 75%);
+      opacity: 0; pointer-events: none;
+      transition: opacity .2s ease;
     }
-    #cardGlow.lit { opacity:1; }
+    #cardGlow.lit { opacity: 1; }
 
-    /* ── CARD HALVES ── */
     #cardTop, #cardBot {
-      position:absolute; left:0; width:100%; height:50%;
-      overflow:hidden;
-      transition:transform .65s cubic-bezier(.22,1,.36,1), opacity .35s ease .3s;
+      position: absolute; left: 0; width: 100%; height: 50%;
+      overflow: hidden;
+      transition: transform .65s cubic-bezier(.22,1,.36,1), opacity .35s ease .3s;
     }
-    #cardTop { top:0; transform-origin:center bottom; border-radius:16px 16px 0 0; }
-    #cardBot { top:50%; transform-origin:center top;  border-radius:0 0 16px 16px; }
-    #cardTop.open { transform:rotateX(-90deg); opacity:0; }
-    #cardBot.open { transform:rotateX(90deg);  opacity:0; }
+    #cardTop { top: 0;   transform-origin: center bottom; }
+    #cardBot { top: 50%; transform-origin: center top;  }
+    #cardTop.open { transform: rotateX(-90deg); opacity: 0; }
+    #cardBot.open { transform: rotateX(90deg);  opacity: 0; }
 
-    /* Card face (each half has its own face) */
     .cface {
-      width:100%; height:100%;
-      background:var(--cream);
-      display:flex; flex-direction:column; align-items:center;
-      overflow:hidden;
+      width: 100%; height: 100%;
+      background: var(--cream);
+      display: flex; flex-direction: column; align-items: center;
+      overflow: hidden;
     }
     #cardTop .cface {
-      border:2px solid var(--gold-dk);
-      border-bottom:1px solid rgba(200,137,10,.25);
-      border-radius:16px 16px 0 0;
-      box-shadow:0 -4px 40px rgba(0,0,0,.12), 0 0 0 1px rgba(200,137,10,.1);
-      justify-content:space-between;
-      padding-bottom:16px;
+      border: 2px solid var(--gold-dk);
+      border-bottom: 1px solid rgba(200,137,10,.22);
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 -4px 40px rgba(0,0,0,.10), 0 0 0 1px rgba(200,137,10,.08);
+      justify-content: space-between;
+      padding-bottom: 16px;
     }
     #cardBot .cface {
-      border:2px solid var(--gold-dk);
-      border-top:none;
-      border-radius:0 0 16px 16px;
-      box-shadow:0 20px 50px rgba(0,0,0,.18), 0 0 0 1px rgba(200,137,10,.1);
-      justify-content:space-between;
-      padding-top:12px;
-      padding-bottom:clamp(16px,4%,24px);
+      border: 2px solid var(--gold-dk);
+      border-top: none;
+      border-radius: 0 0 16px 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.16), 0 0 0 1px rgba(200,137,10,.08);
+      justify-content: space-between;
+      padding-top: 12px;
+      padding-bottom: clamp(16px,4%,24px);
     }
 
-    /* Flag ribbon */
     .ribbon { width:100%; height:9px; display:flex; flex-shrink:0; }
-    .r-red   { flex:0 0 30%; background:var(--red); }
-    .r-white { flex:0 0 40%; background:#d0d0d0; }
-    .r-blue  { flex:0 0 30%; background:var(--blue); }
+    .r-red   { flex: 0 0 30%; background: var(--red); }
+    .r-white { flex: 0 0 40%; background: #ccc; }
+    .r-blue  { flex: 0 0 30%; background: var(--blue); }
 
-    /* Top half content */
     .card-rings { width:72%; max-width:210px; display:block; margin:0 auto; }
     .card-invited {
-      font-family:'Nunito',sans-serif; font-weight:800;
-      font-size:clamp(9px,2.5vw,12px);
-      letter-spacing:3px; color:#888; text-align:center;
-      padding:0 16px;
+      font-family: 'Nunito', sans-serif; font-weight: 800;
+      font-size: clamp(9px,2.5vw,12px);
+      letter-spacing: 3px; color: #888; text-align: center; padding: 0 16px;
     }
 
-    /* Bottom half content */
-    .card-title {
-      text-align:center; line-height:.92; padding:0 8px;
-    }
+    .card-title { text-align: center; line-height: .92; padding: 0 8px; }
     .ct-swana, .ct-olympics {
-      font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(44px,14vw,68px);
-      color:var(--black); display:block; letter-spacing:1px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(44px,14vw,68px);
+      color: var(--black); display: block; letter-spacing: 1px;
     }
-    .card-divider {
-      display:flex; align-items:center; gap:6px; width:78%; margin:0 auto;
-    }
-    .div-line { flex:1; height:1.5px; background:var(--gold); }
-    .div-gem  { width:7px; height:7px; background:var(--gold); transform:rotate(45deg); flex-shrink:0; }
-    .card-info { text-align:center; }
+    .card-divider { display:flex; align-items:center; gap:6px; width:78%; margin:0 auto; }
+    .div-line { flex:1; height:1.5px; background: var(--gold); }
+    .div-gem  { width:7px; height:7px; background: var(--gold); transform:rotate(45deg); flex-shrink:0; }
+    .card-info { text-align: center; }
     .ci-date  { font-family:'Nunito',sans-serif; font-weight:900; font-size:clamp(12px,3.5vw,15px); color:var(--black); letter-spacing:.5px; }
     .ci-venue { font-family:'Nunito',sans-serif; font-weight:700; font-size:clamp(11px,3vw,13px); color:#666; margin-top:1px; }
 
-    /* Open button */
     #openBtn {
-      background:var(--gold); color:var(--black);
-      border:none; width:85%; max-width:240px;
-      padding:clamp(11px,2.8vw,15px) 20px;
-      border-radius:60px;
-      font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(16px,4.5vw,21px); letter-spacing:3px;
-      cursor:pointer; outline:none;
-      box-shadow:0 4px 20px rgba(245,168,0,.45);
-      animation:openPulse 2s ease-in-out infinite;
+      background: var(--gold); color: var(--black);
+      border: none; width: 85%; max-width: 240px;
+      padding: clamp(11px,2.8vw,15px) 20px;
+      border-radius: 60px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(16px,4.5vw,21px); letter-spacing: 3px;
+      cursor: pointer; outline: none;
+      box-shadow: 0 4px 20px rgba(245,168,0,.45);
+      animation: openPulse 2s ease-in-out infinite;
     }
     @keyframes openPulse {
-      0%,100%{box-shadow:0 4px 20px rgba(245,168,0,.4);transform:scale(1)}
-      50%{box-shadow:0 4px 34px rgba(245,168,0,.75);transform:scale(1.03)}
+      0%,100% { box-shadow:0 4px 20px rgba(245,168,0,.4); transform:scale(1); }
+      50%      { box-shadow:0 4px 34px rgba(245,168,0,.75); transform:scale(1.03); }
     }
-    #openBtn:active { transform:scale(.95)!important; }
+    #openBtn:active { transform: scale(.95) !important; }
 
     /* ═══════════════ MAIN INVITATION ═══════════════ */
     #inv {
-      position:fixed; inset:0; z-index:10;
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      padding:clamp(8px,2vh,18px) 16px;
-      gap:clamp(4px,1.2vh,12px);
-      opacity:0; transition:opacity .4s ease;
+      position: fixed; inset: 0; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: clamp(8px,2vh,18px) 16px;
+      gap: clamp(4px,1.2vh,12px);
+      opacity: 0; transition: opacity .4s ease;
     }
-    #inv.visible { opacity:1; }
-
-    /* Flag brush strokes */
-    #flagSvg { position:fixed; inset:0; width:100%; height:100%; z-index:2; }
-    .rb { animation:paintL 1.1s cubic-bezier(.22,1,.36,1) both, sBreath 7s 1.4s ease-in-out infinite; animation-play-state:paused; }
-    .bb { animation:paintR 1.1s cubic-bezier(.22,1,.36,1) .08s both, sBreath 7s 1.7s ease-in-out infinite; animation-play-state:paused; }
-    @keyframes paintL { from{clip-path:inset(0 100% 0 0)} to{clip-path:inset(0 0 0 0)} }
-    @keyframes paintR { from{clip-path:inset(0 0 0 100%)} to{clip-path:inset(0 0 0 0)} }
-    @keyframes sBreath { 0%,100%{opacity:1} 50%{opacity:.82} }
+    #inv.visible { opacity: 1; }
 
     /* Rings */
-    #ringsF { animation:fUD 3.6s ease-in-out 1.7s infinite; }
+    #ringsF { animation: fUD 3.6s ease-in-out 1.7s infinite; }
     @keyframes fUD { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-11px)} }
     #rings {
-      display:block; width:clamp(200px,52vw,340px);
-      opacity:0; transform:translateY(-55px) scale(.85);
-      animation:rEnter .8s cubic-bezier(.22,1,.36,1) .1s both;
-      animation-play-state:paused;
+      display: block; width: clamp(200px,52vw,340px);
+      opacity: 0; transform: translateY(-55px) scale(.85);
+      animation: rEnter .8s cubic-bezier(.22,1,.36,1) .1s both;
+      animation-play-state: paused;
     }
-    @keyframes rEnter { to{opacity:1;transform:none} }
+    @keyframes rEnter { to { opacity:1; transform:none; } }
 
     /* Title block */
     #titleBlock { display:flex; align-items:center; justify-content:center; width:100%; max-width:680px; }
-    #lwL { animation:lwL 4.5s ease-in-out 2.5s infinite; }
-    #lwR { animation:lwR 4.5s ease-in-out 2.7s infinite; }
+    #lwL { animation: lwL 4.5s ease-in-out 2.5s infinite; }
+    #lwR { animation: lwR 4.5s ease-in-out 2.7s infinite; }
     @keyframes lwL { 0%,100%{transform:scale(1) rotate(0deg)} 50%{transform:scale(1.07) rotate(2deg)} }
     @keyframes lwR { 0%,100%{transform:scale(1) rotate(0deg)} 50%{transform:scale(1.07) rotate(-2deg)} }
-    #lLeft,#lRight { flex-shrink:0; width:clamp(60px,13vw,108px); opacity:0; }
+    #lLeft, #lRight { flex-shrink:0; width:clamp(60px,13vw,108px); opacity:0; }
     #lLeft  { transform:scale(.2) rotate(-25deg); animation:lLe .75s cubic-bezier(.22,1,.36,1) .55s both; animation-play-state:paused; }
     #lRight { transform:scale(.2) rotate(25deg);  animation:lRe .75s cubic-bezier(.22,1,.36,1) .55s both; animation-play-state:paused; }
-    @keyframes lLe { to{opacity:1;transform:scale(1) rotate(0deg)} }
-    @keyframes lRe { to{opacity:1;transform:scale(1) rotate(0deg)} }
+    @keyframes lLe { to { opacity:1; transform:scale(1) rotate(0deg); } }
+    @keyframes lRe { to { opacity:1; transform:scale(1) rotate(0deg); } }
     #lRight svg { transform:scaleX(-1); display:block; }
     #titleText { flex:1; text-align:center; min-width:0; }
     .tl {
-      display:block; font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(56px,15.5vw,126px); line-height:.89; color:var(--black); opacity:0;
+      display: block; font-family:'Bebas Neue',sans-serif;
+      font-size: clamp(56px,15.5vw,126px); line-height:.89; color:var(--black); opacity:0;
     }
     .tl.sw { transform:translateX(-80px); animation:swIn .6s cubic-bezier(.22,1,.36,1) .9s both; animation-play-state:paused; }
     .tl.ol { transform:translateX(80px);  animation:olIn .6s cubic-bezier(.22,1,.36,1) 1.05s both; animation-play-state:paused; }
-    @keyframes swIn { to{opacity:1;transform:none} }
-    @keyframes olIn { to{opacity:1;transform:none} }
+    @keyframes swIn { to { opacity:1; transform:none; } }
+    @keyframes olIn { to { opacity:1; transform:none; } }
 
     /* Details */
-    #detF { animation:dF 4.2s ease-in-out 2.8s infinite; }
+    #detF { animation: dF 4.2s ease-in-out 2.8s infinite; }
     @keyframes dF { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
     #bWrap {
       position:relative; display:flex; align-items:center; justify-content:center;
       width:clamp(260px,74vw,510px);
       opacity:0; transform-origin:left center; transform:scaleX(0);
-      animation:bSweep .8s cubic-bezier(.22,1,.36,1) 1.5s both;
+      animation: bSweep .8s cubic-bezier(.22,1,.36,1) 1.5s both;
       animation-play-state:paused;
     }
-    @keyframes bSweep { to{opacity:1;transform:scaleX(1)} }
+    @keyframes bSweep { to { opacity:1; transform:scaleX(1); } }
     .bsvg { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
     #details { position:relative; z-index:2; padding:clamp(14px,3vw,24px) clamp(30px,7vw,60px); text-align:center; }
     .dl { display:block; font-family:'Nunito',sans-serif; font-weight:900; color:#fff; line-height:1.25; text-shadow:0 2px 10px rgba(0,0,0,.3); }
@@ -227,18 +226,18 @@
       border-radius:60px; font-family:'Nunito',sans-serif; font-weight:900;
       font-size:clamp(13px,3.2vw,17px);
       opacity:0; transform:translateY(28px);
-      animation:ctaIn .65s cubic-bezier(.22,1,.36,1) 2s both, ctaGlow 3s ease-in-out 3s infinite;
+      animation: ctaIn .65s cubic-bezier(.22,1,.36,1) 2s both, ctaGlow 3s ease-in-out 3s infinite;
       animation-play-state:paused;
       box-shadow:0 4px 22px rgba(0,0,0,.22);
     }
     #cta:active { transform:scale(.96); }
-    @keyframes ctaIn { to{opacity:1;transform:none} }
+    @keyframes ctaIn { to { opacity:1; transform:none; } }
     @keyframes ctaGlow {
-      0%,100%{box-shadow:0 4px 22px rgba(0,0,0,.22)}
-      50%{box-shadow:0 4px 32px rgba(0,0,0,.35),0 0 0 5px rgba(245,168,0,.25)}
+      0%,100% { box-shadow:0 4px 22px rgba(0,0,0,.22); }
+      50%      { box-shadow:0 4px 32px rgba(0,0,0,.35), 0 0 0 5px rgba(245,168,0,.25); }
     }
     .ctaTop { display:flex; align-items:center; gap:8px; }
-    .igico { width:20px; height:20px; flex-shrink:0; }
+    .igico  { width:20px; height:20px; flex-shrink:0; }
     .ctaSub { font-size:clamp(10px,2.2vw,13px); font-weight:700; opacity:.7; }
 
     /* Sound btn */
@@ -252,33 +251,31 @@
       animation-play-state:paused;
       transition:background .2s, transform .15s ease;
     }
-    @keyframes sndPop { to{opacity:1;transform:scale(1)} }
+    @keyframes sndPop { to { opacity:1; transform:scale(1); } }
     #sndBtn:hover { background:#fff; transform:scale(1.12); }
-    #sndBtn.off { opacity:.4; }
-
-    /* Laurel SVG shared style */
+    #sndBtn.off   { opacity:.4; }
     .lsvg { display:block; width:100%; }
   </style>
 </head>
 <body>
 
 <audio id="bgAudio" src="wavin-flag.mp3" preload="auto"></audio>
-<canvas id="canvas"></canvas>
 <div id="flash"></div>
 
-<!-- ═══ SPLASH ═══ -->
+<!-- ═══ SCROLLING FLAG BACKGROUND ═══ -->
+<div id="flagBg"></div>
+
+<!-- ═══ SPLASH / CARD ═══ -->
 <div id="splash">
   <div id="cardWrap">
     <div id="cardFloat">
       <div id="cardPersp">
-
         <div id="cardGlow"></div>
 
         <!-- TOP HALF -->
         <div id="cardTop">
           <div class="cface">
             <div class="ribbon"><div class="r-red"></div><div class="r-white"></div><div class="r-blue"></div></div>
-            <!-- Olympic rings -->
             <svg class="card-rings" viewBox="4 4 332 112" xmlns="http://www.w3.org/2000/svg">
               <circle cx="50"  cy="60" r="42" fill="none" stroke="#0085C7" stroke-width="11"/>
               <circle cx="110" cy="60" r="42" fill="none" stroke="#F4C300" stroke-width="11"/>
@@ -308,12 +305,11 @@
               <div class="ci-venue">The Lawn</div>
             </div>
             <button id="openBtn">OPEN YOUR INVITATION</button>
-            <div class="ribbon" style="border-radius:0 0 14px 14px; overflow:hidden">
+            <div class="ribbon" style="border-radius:0 0 14px 14px;overflow:hidden">
               <div class="r-red"></div><div class="r-white"></div><div class="r-blue"></div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -321,11 +317,6 @@
 
 <!-- ═══ MAIN INVITATION ═══ -->
 <div id="inv">
-  <svg id="flagSvg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path class="rb" fill="#E63329" d="M0,0 L31,0 Q28,4 33,9 Q29,14 32,20 Q27,26 31,32 Q35,38 29,44 Q32,50 28,56 Q33,62 29,68 Q27,74 32,80 Q29,86 33,92 Q30,96 31,100 L0,100 Z"/>
-    <path class="bb" fill="#2B5BA8" d="M100,0 L69,0 Q72,4 67,9 Q71,14 68,20 Q73,26 69,32 Q65,38 71,44 Q68,50 72,56 Q67,62 71,68 Q73,74 68,80 Q71,86 67,92 Q70,96 69,100 L100,100 Z"/>
-  </svg>
-
   <div id="ringsF">
     <svg id="rings" viewBox="4 4 332 112" xmlns="http://www.w3.org/2000/svg">
       <circle cx="50"  cy="60" r="42" fill="none" stroke="#0085C7" stroke-width="11"/>
@@ -429,47 +420,80 @@
     sndBtn.classList.toggle('off', muted);
   });
 
-  /* ── PARTICLES ── */
-  const canvas = document.getElementById('canvas');
-  const ctx    = canvas.getContext('2d');
-  const COLS   = ['#0085C7','#F4C300','#000','#009F6B','#DF0024','#E63329','#F5A800'];
-  let pts = [];
-  function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
-  resize(); window.addEventListener('resize', () => { resize(); init(); });
-  function mkPt(randY) {
-    return { x:Math.random()*canvas.width, y:randY?Math.random()*canvas.height:canvas.height+20,
-      r:Math.random()*7+4, c:COLS[Math.floor(Math.random()*COLS.length)],
-      sp:Math.random()*.55+.2, dr:(Math.random()-.5)*.45,
-      al:Math.random()*.28+.08, lw:Math.random()*1.5+1.2 };
+  /* ── FLAG BACKGROUND ── */
+  // SWANA-region flags
+  const FLAGS = [
+    '🇦🇪','🇸🇦','🇮🇷','🇮🇶','🇸🇾','🇱🇧','🇯🇴','🇵🇸','🇪🇬',
+    '🇱🇾','🇹🇳','🇩🇿','🇲🇦','🇾🇪','🇴🇲','🇰🇼','🇧🇭','🇶🇦',
+    '🇹🇷','🇦🇫','🇦🇿','🇸🇩','🇸🇴','🇩🇯','🇪🇷','🇵🇰','🇺🇿'
+  ];
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
   }
-  function init() { pts=[]; for(let i=0;i<Math.round(innerWidth/45);i++) pts.push(mkPt(true)); }
-  init();
-  (function tick() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    pts.forEach((p,i) => {
-      p.y-=p.sp; p.x+=p.dr;
-      if(p.y+p.r<0) pts[i]=mkPt(false);
-      ctx.save(); ctx.globalAlpha=p.al; ctx.strokeStyle=p.c; ctx.lineWidth=p.lw;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.stroke(); ctx.restore();
-    });
-    requestAnimationFrame(tick);
-  })();
+
+  function buildFlagBg() {
+    const bg    = document.getElementById('flagBg');
+    bg.innerHTML = '';
+
+    const ROW_H   = 34;   // px per row (font-size 16 × line-height 2.1 ≈ 34)
+    const numRows = Math.ceil(window.innerHeight / ROW_H) + 2;
+
+    // How many repetitions of the flag set to fill 2.5× screen width (half-content)
+    const approxSetPx = FLAGS.length * 26; // rough px per full set at font-size:16px
+    const reps = Math.max(2, Math.ceil((window.innerWidth * 2.5) / approxSetPx));
+
+    for (let i = 0; i < numRows; i++) {
+      const row = document.createElement('div');
+      row.className = 'flag-row';
+
+      // Each row uses a different shuffle so rows look distinct
+      const set = shuffle(FLAGS).join(' ');
+      const half = (set + '  ').repeat(reps);
+      // Duplicate: animation scrolls by -50%, looping seamlessly
+      row.textContent = half + half;
+
+      const goLeft  = i % 2 === 0;
+      // Vary speed per row for organic feel: 14–28s
+      const speed   = 14 + (i % 7) * 2;
+
+      row.style.animationName           = goLeft ? 'scrollL' : 'scrollR';
+      row.style.animationDuration       = speed + 's';
+      row.style.animationTimingFunction = 'linear';
+      row.style.animationIterationCount = 'infinite';
+
+      bg.appendChild(row);
+    }
+  }
+
+  buildFlagBg();
+  window.addEventListener('resize', buildFlagBg);
 
   /* ── OPEN CARD ── */
-  const PLAY = ['#rings','#lLeft','#lRight','.tl.sw','.tl.ol','#bWrap','#cta','#sndBtn','.rb','.bb'];
-  function play(sel) { document.querySelectorAll(sel).forEach(el => el.style.animationPlayState='running'); }
+  const PLAY = [
+    '#rings','#lLeft','#lRight',
+    '.tl.sw','.tl.ol',
+    '#bWrap','#cta','#sndBtn'
+  ];
+  function play(sel) {
+    document.querySelectorAll(sel).forEach(el => el.style.animationPlayState = 'running');
+  }
 
   document.getElementById('openBtn').addEventListener('click', async () => {
     startAudio();
 
-    // Crack the card open
     document.getElementById('cardTop').classList.add('open');
     document.getElementById('cardBot').classList.add('open');
 
     await new Promise(r => setTimeout(r, 120));
     document.getElementById('cardGlow').classList.add('lit');
 
-    await new Promise(r => setTimeout(r, 260));
+    await new Promise(r => setTimeout(r, 280));
     document.getElementById('flash').classList.add('on');
     document.getElementById('inv').classList.add('visible');
     PLAY.forEach(play);
