@@ -256,6 +256,36 @@
     #sndBtn:hover { background:#fff; transform:scale(1.12); }
     #sndBtn.off   { opacity:.4; }
     .lsvg { display:block; width:100%; }
+
+    /* ═══ BRUSH STROKE SIDE ACCENTS ═══ */
+    #brushLeft, #brushRight {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      height: clamp(280px, 72vh, 580px);
+      width: auto; pointer-events: none;
+      opacity: 0;
+      animation: brushIn .7s ease .2s both;
+      animation-play-state: paused;
+    }
+    #brushLeft  { left: -24px; }
+    #brushRight { right: -24px; }
+    @keyframes brushIn { to { opacity: 1; } }
+
+    /* ═══ LAUREL WREATH ═══ */
+    #wreathWrap { animation: fUD 3.8s ease-in-out 2s infinite; }
+    #wreath {
+      display: block; width: clamp(130px, 32vw, 210px);
+      opacity: 0;
+      animation: rEnter .7s cubic-bezier(.22,1,.36,1) .25s both;
+      animation-play-state: paused;
+    }
+
+    /* ═══ GREEN BRUSH BAND ═══ */
+    .bimg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: fill; pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -309,59 +339,33 @@
 
 <!-- ═══ MAIN INVITATION ═══ -->
 <div id="inv">
+
+  <!-- Side brush strokes -->
+  <img id="brushLeft"  src="brush-blue.png" alt="">
+  <img id="brushRight" src="brush-red.png"  alt="">
+
+  <!-- Olympic rings -->
   <div id="ringsF">
     <img id="rings" src="olympic-rings.png" alt="Olympic rings">
   </div>
 
+  <!-- Laurel wreath -->
+  <div id="wreathWrap">
+    <img id="wreath" src="laurel-wreath.png" alt="">
+  </div>
+
+  <!-- Title -->
   <div id="titleBlock">
-    <div id="lwL">
-      <svg id="lLeft" class="lsvg" viewBox="0 0 90 200" xmlns="http://www.w3.org/2000/svg">
-        <path d="M44,196 Q37,155 29,112 Q23,68 37,14" stroke="#C8890A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <g fill="#F5A800">
-          <ellipse cx="33" cy="184" rx="9"  ry="17" transform="rotate(0,33,184)"/>
-          <ellipse cx="24" cy="168" rx="9"  ry="16" transform="rotate(-13,24,168)"/>
-          <ellipse cx="18" cy="151" rx="8"  ry="15" transform="rotate(-26,18,151)"/>
-          <ellipse cx="14" cy="133" rx="8"  ry="14" transform="rotate(-39,14,133)"/>
-          <ellipse cx="12" cy="114" rx="7"  ry="13" transform="rotate(-52,12,114)"/>
-          <ellipse cx="14" cy="96"  rx="7"  ry="12" transform="rotate(-64,14,96)"/>
-          <ellipse cx="19" cy="78"  rx="6"  ry="11" transform="rotate(-77,19,78)"/>
-          <ellipse cx="27" cy="62"  rx="6"  ry="10" transform="rotate(-89,27,62)"/>
-          <ellipse cx="38" cy="48"  rx="5"  ry="9"  transform="rotate(-102,38,48)"/>
-          <ellipse cx="51" cy="36"  rx="5"  ry="8"  transform="rotate(-115,51,36)"/>
-          <ellipse cx="65" cy="25"  rx="4"  ry="7"  transform="rotate(-127,65,25)"/>
-        </g>
-      </svg>
-    </div>
     <div id="titleText">
       <span class="tl sw">SWANA</span>
       <span class="tl ol">OLYMPICS</span>
     </div>
-    <div id="lwR">
-      <svg id="lRight" class="lsvg" viewBox="0 0 90 200" xmlns="http://www.w3.org/2000/svg">
-        <path d="M44,196 Q37,155 29,112 Q23,68 37,14" stroke="#C8890A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <g fill="#F5A800">
-          <ellipse cx="33" cy="184" rx="9"  ry="17" transform="rotate(0,33,184)"/>
-          <ellipse cx="24" cy="168" rx="9"  ry="16" transform="rotate(-13,24,168)"/>
-          <ellipse cx="18" cy="151" rx="8"  ry="15" transform="rotate(-26,18,151)"/>
-          <ellipse cx="14" cy="133" rx="8"  ry="14" transform="rotate(-39,14,133)"/>
-          <ellipse cx="12" cy="114" rx="7"  ry="13" transform="rotate(-52,12,114)"/>
-          <ellipse cx="14" cy="96"  rx="7"  ry="12" transform="rotate(-64,14,96)"/>
-          <ellipse cx="19" cy="78"  rx="6"  ry="11" transform="rotate(-77,19,78)"/>
-          <ellipse cx="27" cy="62"  rx="6"  ry="10" transform="rotate(-89,27,62)"/>
-          <ellipse cx="38" cy="48"  rx="5"  ry="9"  transform="rotate(-102,38,48)"/>
-          <ellipse cx="51" cy="36"  rx="5"  ry="8"  transform="rotate(-115,51,36)"/>
-          <ellipse cx="65" cy="25"  rx="4"  ry="7"  transform="rotate(-127,65,25)"/>
-        </g>
-      </svg>
-    </div>
   </div>
 
+  <!-- Details band — green brush background -->
   <div id="detF">
     <div id="bWrap">
-      <svg class="bsvg" viewBox="0 0 500 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8,38 Q35,8 72,20 L428,6 Q465,4 492,32 L490,122 Q486,150 450,140 L56,148 Q26,150 6,124 Z" fill="#3DAA47" opacity=".94"/>
-        <path d="M24,60 Q58,52 98,58 L402,46 Q438,44 462,56 L460,82 Q425,74 388,76 L100,86 Q62,88 26,78 Z" fill="#4EC055" opacity=".28"/>
-      </svg>
+      <img class="bimg" src="brush-green.png" alt="">
       <div id="details">
         <span class="dl dd">04 / 23 / 26</span>
         <span class="dl dt">4 PM – 7 PM</span>
@@ -459,7 +463,8 @@
 
   /* ── OPEN CARD ── */
   const PLAY = [
-    '#rings','#lLeft','#lRight',
+    '#rings','#wreath',
+    '#brushLeft','#brushRight',
     '.tl.sw','.tl.ol',
     '#bWrap','#cta','#sndBtn'
   ];
